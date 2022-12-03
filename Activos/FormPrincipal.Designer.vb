@@ -22,11 +22,12 @@ Partial Class FormPrincipal
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormPrincipal))
         Me.PanelContenedor = New System.Windows.Forms.Panel()
         Me.PanelFormularios = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.LOGO = New System.Windows.Forms.PictureBox()
+        Me.logo = New System.Windows.Forms.PictureBox()
         Me.PanelMenu = New System.Windows.Forms.Panel()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -36,15 +37,19 @@ Partial Class FormPrincipal
         Me.btnMinimizar = New System.Windows.Forms.PictureBox()
         Me.btnMaximizar = New System.Windows.Forms.PictureBox()
         Me.btnCerrar = New System.Windows.Forms.PictureBox()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.logo2 = New System.Windows.Forms.PictureBox()
         Me.PanelContenedor.SuspendLayout()
         Me.PanelFormularios.SuspendLayout()
-        CType(Me.LOGO, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.logo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelMenu.SuspendLayout()
         Me.PanelBarraTitulo.SuspendLayout()
         CType(Me.btnRestaurar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnMinimizar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnMaximizar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnCerrar, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.logo2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PanelContenedor
@@ -63,8 +68,9 @@ Partial Class FormPrincipal
         'PanelFormularios
         '
         Me.PanelFormularios.BackColor = System.Drawing.SystemColors.Control
+        Me.PanelFormularios.Controls.Add(Me.logo2)
         Me.PanelFormularios.Controls.Add(Me.Label1)
-        Me.PanelFormularios.Controls.Add(Me.LOGO)
+        Me.PanelFormularios.Controls.Add(Me.logo)
         Me.PanelFormularios.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelFormularios.Location = New System.Drawing.Point(188, 32)
         Me.PanelFormularios.Margin = New System.Windows.Forms.Padding(2)
@@ -84,16 +90,16 @@ Partial Class FormPrincipal
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "ACTIVOS"
         '
-        'LOGO
+        'logo
         '
-        Me.LOGO.Image = CType(resources.GetObject("LOGO.Image"), System.Drawing.Image)
-        Me.LOGO.Location = New System.Drawing.Point(139, 55)
-        Me.LOGO.Margin = New System.Windows.Forms.Padding(2)
-        Me.LOGO.Name = "LOGO"
-        Me.LOGO.Size = New System.Drawing.Size(550, 314)
-        Me.LOGO.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.LOGO.TabIndex = 0
-        Me.LOGO.TabStop = False
+        Me.logo.Image = CType(resources.GetObject("logo.Image"), System.Drawing.Image)
+        Me.logo.Location = New System.Drawing.Point(139, 55)
+        Me.logo.Margin = New System.Windows.Forms.Padding(2)
+        Me.logo.Name = "logo"
+        Me.logo.Size = New System.Drawing.Size(550, 314)
+        Me.logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.logo.TabIndex = 0
+        Me.logo.TabStop = False
         '
         'PanelMenu
         '
@@ -228,6 +234,26 @@ Partial Class FormPrincipal
         Me.btnCerrar.TabIndex = 0
         Me.btnCerrar.TabStop = False
         '
+        'Timer1
+        '
+        Me.Timer1.Interval = 30000
+        '
+        'Timer2
+        '
+        Me.Timer2.Interval = 30000
+        '
+        'logo2
+        '
+        Me.logo2.Image = CType(resources.GetObject("logo2.Image"), System.Drawing.Image)
+        Me.logo2.Location = New System.Drawing.Point(139, 55)
+        Me.logo2.Margin = New System.Windows.Forms.Padding(2)
+        Me.logo2.Name = "logo2"
+        Me.logo2.Size = New System.Drawing.Size(550, 314)
+        Me.logo2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.logo2.TabIndex = 2
+        Me.logo2.TabStop = False
+        Me.logo2.Visible = False
+        '
         'FormPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -243,7 +269,7 @@ Partial Class FormPrincipal
         Me.PanelContenedor.ResumeLayout(False)
         Me.PanelFormularios.ResumeLayout(False)
         Me.PanelFormularios.PerformLayout()
-        CType(Me.LOGO, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.logo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelMenu.ResumeLayout(False)
         Me.PanelBarraTitulo.ResumeLayout(False)
         Me.PanelBarraTitulo.PerformLayout()
@@ -251,6 +277,7 @@ Partial Class FormPrincipal
         CType(Me.btnMinimizar, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnMaximizar, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnCerrar, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.logo2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -267,5 +294,8 @@ Partial Class FormPrincipal
     Friend WithEvents Button2 As Button
     Friend WithEvents Button1 As Button
     Friend WithEvents Label1 As Label
-    Friend WithEvents LOGO As PictureBox
+    Friend WithEvents logo As PictureBox
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents logo2 As PictureBox
+    Friend WithEvents Timer2 As Timer
 End Class
