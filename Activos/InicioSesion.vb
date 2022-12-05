@@ -58,8 +58,29 @@ Public Class InicioSesion
     ''' <param name="e"></param>
     Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
         If Not txtUser.Text.Equals("") And Not txtPass.Text.Equals("") Then
-            Me.Hide()
-            FormPrincipal.Show()
+            Dim Conexion As SQLite.SQLiteConnection
+            Dim Adaptador As SQLite.SQLiteDataAdapter
+
+            Conexion = New SQLite.SQLiteConnection
+            Conexion.ConnectionString = "Data Source='C:\Proyectos\Activos Escritorio\Activos_Escritorio\Activos\bin\Debug\activos.db';Version=3;"
+
+            Conexion.Open()
+
+            Dim ds As New DataSet
+            Dim sql As String
+            sql = String.Format("SELECT * FROM USUARIO WHERE usuario = '{0}' AND contrasena = '{1}'", txtUser.Text, txtPass.Text)
+            Adaptador = New SQLite.SQLiteDataAdapter(sql, Conexion)
+            Adaptador.Fill(ds)
+            If ds.Tables(0).Rows.Count > 0 Then
+                idUsuario = Integer.Parse(ds.Tables(0).Rows(0)(0).ToString())
+                cedula = ds.Tables(0).Rows(0)(2).ToString()
+                nombre = ds.Tables(0).Rows(0)(3).ToString() + " " + ds.Tables(0).Rows(0)(4).ToString()
+                Conexion.Close()
+                Me.Hide()
+                FormPrincipal.Show()
+            Else
+                MsgBox("El usuario no existe.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Inicio de Sesión")
+            End If
         Else
             MsgBox("Por favor ingrese los datos.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Inicio de Sesión")
         End If
