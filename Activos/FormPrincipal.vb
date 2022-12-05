@@ -1,4 +1,5 @@
 ﻿Imports System.Runtime.InteropServices
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Status
 
 Public Class FormPrincipal
 #Region "FUNCIONALIDADES DEL FORMULARIO"
@@ -113,15 +114,15 @@ Public Class FormPrincipal
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        AbrirFormEnPanel(Of Form1)()
-        Button1.BackColor = Color.FromArgb(12, 61, 92)
-    End Sub
+    'Private Sub Button1_Click(sender As Object, e As EventArgs)
+    '    AbrirFormEnPanel(Of Form1)()
+    '    Button1.BackColor = Color.FromArgb(12, 61, 92)
+    'End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        AbrirFormEnPanel(Of Form2)()
-        Button2.BackColor = Color.FromArgb(12, 61, 92)
-    End Sub
+    'Private Sub Button2_Click(sender As Object, e As EventArgs)
+    '    AbrirFormEnPanel(Of Form2)()
+    '    Button2.BackColor = Color.FromArgb(12, 61, 92)
+    'End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         logo2.Visible = False
@@ -139,23 +140,63 @@ Public Class FormPrincipal
 
     Private Sub FormPrincipal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer2.Enabled = True
+        lblBienvenido.Text = "Bienvenido " + nombre
+        Dim Conexion As SQLite.SQLiteConnection
+        Dim Adaptador As SQLite.SQLiteDataAdapter
+
+        Conexion = New SQLite.SQLiteConnection
+        Conexion.ConnectionString = "Data Source='C:\Proyectos\Activos Escritorio\Activos_Escritorio\Activos\bin\Debug\activos.db';Version=3;"
+
+        Conexion.Open()
+
+        Dim ds As New DataSet
+        Dim sql As String
+        sql = String.Format("SELECT m.*
+                            FROM MENU m 
+                            INNER JOIN ROL_MENU rm 
+                            ON m.menu_id = rm.menu_id 
+                            INNER JOIN ROL r 
+                            ON rm.rol_id = r.rol_id
+                            INNER JOIN USUARIO_ROL ur 
+                            ON r.rol_id = ur.persona 
+                            WHERE ur.persona = {0};", idUsuario)
+        Adaptador = New SQLite.SQLiteDataAdapter(sql, Conexion)
+        Adaptador.Fill(ds)
+        If ds.Tables(0).Rows.Count > 0 Then
+            For I As Integer = 0 To ds.Tables(0).Rows.Count - 1
+                Dim b As New Button()
+                b.Name = "btn" + ds.Tables(0).Rows(I)(2).ToString()
+                b.Text = ds.Tables(0).Rows(I)(2).ToString()
+                b.Height = 32
+                b.Width = 188
+                b.BackColor = Color.FromArgb(48, 63, 105)
+                b.ForeColor = Color.WhiteSmoke
+                'Opcional, conectar el evento click:
+                AddHandler b.Click, AddressOf Btn_Click
+                PanelMenu.Controls.Add(b)
+            Next I
+        End If
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        AbrirFormEnPanel(Of Form3)()
-        Button3.BackColor = Color.FromArgb(12, 61, 92)
+    Private Sub Btn_Click(sender As Object, e As EventArgs)
+        MsgBox("Acción del bóton.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Acción del bóton.")
     End Sub
+
+    'Private Sub Button3_Click(sender As Object, e As EventArgs)
+    '    AbrirFormEnPanel(Of Form3)()
+    '    Button3.BackColor = Color.FromArgb(12, 61, 92)
+    'End Sub
     'METODO/EVENTO AL CERRAR FORMS
     Private Sub CerrarFormulario(ByVal sender As Object, ByVal e As FormClosedEventArgs)
         'CONDICION SI FORMS ESTA ABIERTO
-        If (Application.OpenForms("Form1") Is Nothing) Then
-            Button1.BackColor = Color.FromArgb(4, 41, 68)
-        End If
-        If (Application.OpenForms("Form2") Is Nothing) Then
-            Button2.BackColor = Color.FromArgb(4, 41, 68)
-        End If
-        If (Application.OpenForms("Form3") Is Nothing) Then
-            Button3.BackColor = Color.FromArgb(4, 41, 68)
-        End If
+        'If (Application.OpenForms("Form1") Is Nothing) Then
+        '    Button1.BackColor = Color.FromArgb(4, 41, 68)
+        'End If
+        'If (Application.OpenForms("Form2") Is Nothing) Then
+        '    Button2.BackColor = Color.FromArgb(4, 41, 68)
+        'End If
+        'If (Application.OpenForms("Form3") Is Nothing) Then
+        '    Button3.BackColor = Color.FromArgb(4, 41, 68)
+        'End If
     End Sub
 End Class
